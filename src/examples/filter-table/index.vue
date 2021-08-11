@@ -10,7 +10,21 @@
       :page-size="pageInfo.limit"
       @on-change="handlePage"
       @on-page-size-change="handlePageSize"
-    ></r-filter-table>
+    >
+      <template slot="action" slot-scope="{ row }">
+        <a @click="handleModal(row)">编辑</a>&nbsp;
+        <a @click="handleRemove(row)">删除</a>&nbsp;
+        <!-- <Dropdown transfer ref="dropdown" @on-click="handleClick($event, row)">
+          <a href="javascript:void(0)">
+            <span>更多</span>
+            <Icon type="ios-arrow-down"></Icon>
+          </a>
+          <DropdownMenu slot="list">
+            <DropdownItem name="sendToEmail">发送到密保邮箱</DropdownItem>
+          </DropdownMenu> </Dropdown
+        >&nbsp; -->
+      </template>
+    </r-filter-table>
   </div>
 </template>
 <script>
@@ -80,6 +94,12 @@ export default {
           filter: {
             type: 'Date',
           },
+        },
+        {
+          title: '操作',
+          slot: 'action',
+          fixed: 'right',
+          width: 150,
         },
       ],
       data: [

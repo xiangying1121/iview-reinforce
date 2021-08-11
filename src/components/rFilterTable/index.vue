@@ -1,6 +1,14 @@
 <template>
   <div ref="selection">
-    <Table v-bind="$attrs" v-on="$listeners" :columns="filterColumns"> </Table>
+    <Table v-bind="$attrs" v-on="$listeners" :columns="filterColumns">
+      <template
+        v-for="column in filterColumns"
+        :slot="column.slot || ''"
+        slot-scope="params"
+      >
+        <slot :name="column.slot || ''" v-bind="params"></slot>
+      </template>
+    </Table>
     <Page
       v-if="page"
       transfer
@@ -37,7 +45,7 @@ export default {
   created() {
     const searchInput = (h, params, that) => (
       <div class="search-area">
-        <span class="ivu-title">{params.column.title}</span>
+        <span class="r-ivu-title">{params.column.title}</span>
         <Poptip
           transfer={true}
           transfer={true}
@@ -83,7 +91,7 @@ export default {
 
     const selectInput = (h, params, that) => (
       <div class="search-area">
-        <span class="ivu-title">{params.column.title}</span>
+        <span class="r-ivu-title">{params.column.title}</span>
         <Poptip
           popper-class="ivu-table-popper"
           transfer={true}
@@ -134,7 +142,7 @@ export default {
 
     const datePicker = (h, params, that) => (
       <div class="search-area">
-        <span class="ivu-title">{params.column.title}</span>
+        <span class="r-ivu-title">{params.column.title}</span>
         <Poptip
           transfer={true}
           transfer={true}
@@ -237,11 +245,7 @@ export default {
 }
 </script>
 <style lang="less">
-.ivu-title {
+.r-ivu-title {
   padding-right: 5px;
-}
-.ivu-filter-list-item {
-  display: flex;
-  flex-direction: column;
 }
 </style>
