@@ -79,7 +79,7 @@ export default {
               value: 2,
             },
           ],
-          filterMultiple: true,
+          filterMultiple: false,
           filterMethod(value, row) {
             if (value === 1) {
               return row.name === 'Joe'

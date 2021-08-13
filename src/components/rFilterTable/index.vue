@@ -17,6 +17,8 @@
       show-elevator
       show-sizer
       show-total
+      @on-change="handlePage"
+      @on-page-size-change="handlePageSize"
     ></Page>
   </div>
 </template>
@@ -140,6 +142,58 @@ export default {
       </div>
     )
 
+    const radioInput = (h, params, that) => (
+      <div class="search-area">
+        <span class="r-ivu-title">{params.column.title}</span>
+        <Poptip
+          popper-class="ivu-table-popper"
+          transfer={true}
+          placement="bottom"
+          offset={8}
+          onOn-popper-hide={() => that.hancleCancle(params)}
+        >
+          <span class="ivu-table-filter">
+            <Icon
+              type="ios-funnel"
+              class={that.searchInfo[params.column.key] ? 'on' : ''}
+            />
+          </span>
+          <div slot="content">
+            <div class="ivu-table-filter-list">
+              <div class="ivu-table-filter-list-item">
+                <radio-group
+                  v-model={params.column.value}
+                  vertical={true}
+                  onOn-change={() => that.changeValue(params)}
+                >
+                  {params.column.filter.options.filters.map((item) => {
+                    return <radio label={item.value}>{item.label}</radio>
+                  })}
+                </radio-group>
+              </div>
+              <div class="pop-search-footer ivu-table-filter-footer">
+                <Button
+                  disabled={
+                    !params.column.value || params.column.value.length <= 0
+                  }
+                  type="text"
+                  onClick={() => that.setColumnParams(params)}
+                >
+                  筛选
+                </Button>
+                <Button
+                  type="text"
+                  onClick={() => that.setColumnParams(params, 'reset')}
+                >
+                  重置
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Poptip>
+      </div>
+    )
+
     const datePicker = (h, params, that) => (
       <div class="search-area">
         <span class="r-ivu-title">{params.column.title}</span>
@@ -191,9 +245,18 @@ export default {
       let filter = this.columns[index]
       if (this.columns[index].filter) {
         if (this.columns[index].filter.type === 'Select') {
-          filter = Object.assign(this.columns[index], {
-            renderHeader: (h, params) => selectInput(h, params, this),
-          })
+          if (
+            this.columns[index].filter.options &&
+            this.columns[index].filter.options.filterMultiple
+          ) {
+            filter = Object.assign(this.columns[index], {
+              renderHeader: (h, params) => selectInput(h, params, this),
+            })
+          } else {
+            filter = Object.assign(this.columns[index], {
+              renderHeader: (h, params) => radioInput(h, params, this),
+            })
+          }
         } else if (this.columns[index].filter.type === 'Input') {
           filter = Object.assign(this.columns[index], {
             renderHeader: (h, params) => searchInput(h, params, this),
@@ -215,7 +278,11 @@ export default {
     },
     hancleCancle(params) {
       console.log('hancleCancle')
-      if (params.column.filter.type === 'Select') {
+      if (
+        params.column.filter.type === 'Select' &&
+        params.column.filter.options &&
+        params.column.filter.options.filterMultiple
+      ) {
         params.column.value = this.searchInfo[params.column.key] || []
       } else {
         params.column.value = this.searchInfo[params.column.key] || null
@@ -228,7 +295,11 @@ export default {
       this.$refs.selection.click() // 隐藏pop弹框
       const key = params.column.key
       if (type === 'reset') {
-        if (params.column.filter.type === 'Select') {
+        if (
+          params.column.filter.type === 'Select' &&
+          params.column.filter.options &&
+          params.column.filter.options.filterMultiple
+        ) {
           params.column.value = []
         } else {
           params.column.value = null
