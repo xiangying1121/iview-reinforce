@@ -17,8 +17,6 @@
       show-elevator
       show-sizer
       show-total
-      @on-change="handlePage"
-      @on-page-size-change="handlePageSize"
     ></Page>
   </div>
 </template>
@@ -218,6 +216,7 @@ export default {
                   type={params.column.dateType}
                   onOn-change={() => that.changeValue(params)}
                   clearable={false}
+                  editable={false}
                   style="width: 200px"
                 ></DatePicker>
               </div>
@@ -310,6 +309,7 @@ export default {
       } else {
         this.$set(this.searchInfo, params.column.key, params.column.value)
       }
+      this.$forceUpdate()
       this.$emit('on-search', this.searchInfo)
     },
   },
