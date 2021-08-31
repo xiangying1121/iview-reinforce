@@ -128,6 +128,11 @@ export default {
       },
     }
   },
+  created() {
+    setTimeout(() => {
+      this.columns[0].title = 'xxxx'
+    }, 2000)
+  },
   methods: {
     handleSearch(params) {
       console.log(params)
