@@ -1,7 +1,7 @@
 {
   "name": "iview-reinforce",
   "description": "iview二次封装及组合拓展",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": false,
   "author": "xiangying1121<xiangying_1121@163.com>",
   "main": "lib/iview-reinforce.umd.min.js",
@@ -21,7 +21,7 @@
     "core-js": "^3.16.0",
     "less": "^4.1.1",
     "less-loader": "^4.0.5",
-    "view-design": "^4.6.1",
+    "view-design": "^4.7.0",
     "vue": "^2.6.11",
     "vue-router": "^3.5.2"
   },
