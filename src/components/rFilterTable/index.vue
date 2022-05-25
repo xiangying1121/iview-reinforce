@@ -1,6 +1,6 @@
 <template>
   <div ref="selection">
-    <Table v-bind="$attrs" v-on="$listeners" :columns="filterColumns">
+    <Table ref="table" v-bind="$attrs" v-on="$listeners" :columns="filterColumns">
       <template
         v-for="column in filterColumns"
         :slot="column.slot || ''"
@@ -54,6 +54,7 @@ export default {
     this.formatColumns()
   },
   methods: {
+    
     formatColumns() {
       const searchInput = (h, params, that) => (
         <div class="search-area">
@@ -327,6 +328,12 @@ export default {
       this.$forceUpdate()
       this.$emit('on-search', this.searchInfo)
     },
+    exportCsv({filename}){
+      this.$refs.table.exportCsv({
+        filename: filename
+      })
+    },
+     
   },
 }
 </script>
