@@ -1,6 +1,8 @@
 <template>
   <div>
+     <a @click="exportData">导出</a>&nbsp;
     <r-filter-table
+     ref="table2"
       :data="data"
       :columns="columns"
       @on-search="handleSearch"
@@ -145,6 +147,10 @@ export default {
       this.pageInfo.limit = size
       this.handleSearch()
     },
+    exportData(){
+      console.log(this.$refs.table)
+      this.$refs.table2.exportCsv({filename:'导出.csv'})
+    }
   },
 }
 </script>
